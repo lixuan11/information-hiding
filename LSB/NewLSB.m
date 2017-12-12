@@ -1,52 +1,52 @@
 clear all;
 clc;
 
-bitDepth = input('Please input a integer between 1 and 8: ');
+bitDepth = input('Please input an integer between 1 and 8: ');
 
-% [fn1, pn1] = uigetfile({'* .bmp', 'bmp file(* .bmp)';}, 'Ñ¡ÔñÊı×ÖË®Ó¡Í¼');
+% [fn1, pn1] = uigetfile({'* .bmp', 'bmp file(* .bmp)';}, 'é€‰æ‹©æ•°å­—æ°´å°å›¾');
 % originalWatermark = imread(strcat(pn1, fn1));
-originalWatermark = imread('»îÔÚÃÎÀï.bmp');
-subplot(4, 2, 1), imshow(originalWatermark), title('Ô­Ê¼Ë®Ó¡Í¼');
+originalWatermark = imread('æ´»åœ¨æ¢¦é‡Œ.bmp');
+subplot(4, 2, 1), imshow(originalWatermark), title('åŸå§‹æ°´å°å›¾');
 
-% ½«Ë®Ó¡Í¼Ïñ¶ş½øÖÆ»¯
+% å°†æ°´å°å›¾åƒäºŒè¿›åˆ¶åŒ–
 binaryWatermark = im2bw(originalWatermark, 0.4);
 [xh_row, xh_col] = size(binaryWatermark);
-subplot(4, 2, 2), imshow(binaryWatermark), title('¶ş½øÖÆË®Ó¡');
+subplot(4, 2, 2), imshow(binaryWatermark), title('äºŒè¿›åˆ¶æ°´å°');
 
-% [fn2, pn2] = uigetfile({'* .bmp', 'bmp file(* .bmp)';}, 'Ñ¡ÔñÔ­Ê¼Í¼Ïñ');
+% [fn2, pn2] = uigetfile({'* .bmp', 'bmp file(* .bmp)';}, 'é€‰æ‹©åŸå§‹å›¾åƒ');
 % originalImage = imread(strcat(pn2, fn2));
-originalImage = imread('°¢È±¸ßÇå°æ480.bmp');
-% Çó³öÍ¼ÏñµÄĞĞÊıºÍÁĞÊı
+originalImage = imread('é˜¿ç¼ºé«˜æ¸…ç‰ˆ480.bmp');
+% æ±‚å‡ºå›¾åƒçš„è¡Œæ•°å’Œåˆ—æ•°
 [OIRow, OICol, n] = size(originalImage);
-subplot(4, 2, 3), imshow(originalImage), title('Ô­Ê¼Í¼Ïñ');
+subplot(4, 2, 3), imshow(originalImage), title('åŸå§‹å›¾åƒ');
 
 
-% ½«Ô­Ê¼Í¼ÏñµÄ×îµÍÓĞĞ§Î»ÖÃÎª0
+% å°†åŸå§‹å›¾åƒçš„æœ€ä½æœ‰æ•ˆä½ç½®ä¸º0
 imageWithZeroLowest = bitset(originalImage, 1);
-subplot(4, 2, 4), imshow(imageWithZeroLowest), title('½«Ô­Ê¼Í¼ÏñµÄ×îµÍÓĞĞ§Î»ÖÃÎª0ºóµÄÍ¼Ïñ');
+subplot(4, 2, 4), imshow(imageWithZeroLowest), title('å°†åŸå§‹å›¾åƒçš„æœ€ä½æœ‰æ•ˆä½ç½®ä¸º0åçš„å›¾åƒ');
 
 
-% ½«¶ş½øÖÆË®Ó¡Ç¶Èëµ½Í¼ĞÎÖĞ
+% å°†äºŒè¿›åˆ¶æ°´å°åµŒå…¥åˆ°å›¾å½¢ä¸­
 imageWithWatermark = imageWithZeroLowest;
 for i = 1 : OIRow
     for j = 1 : OICol
-        % ÔÚ1Î»Æ½ÃæÉÏÇ¶ÈëË®Ó¡£¬ÖµÔ½´ó£¬Ë®Ó¡Ô½ÇåÎú,Î»Æ½ÃæµÄÈ¡Öµ·¶Î§ÊÇ1µ½8
+        % åœ¨1ä½å¹³é¢ä¸ŠåµŒå…¥æ°´å°ï¼Œå€¼è¶Šå¤§ï¼Œæ°´å°è¶Šæ¸…æ™°,ä½å¹³é¢çš„å–å€¼èŒƒå›´æ˜¯1åˆ°8
         imageWithWatermark(i, j) = bitset(imageWithWatermark(i, j), bitDepth, binaryWatermark(i, j));
     end
 end
 watermarkedImageName = ['imageWithWatermarkInDepth'  num2str(bitDepth)  '.bmp'];
 imwrite(imageWithWatermark, watermarkedImageName);
-subplot(4, 2, 5), imshow(watermarkedImageName), title('Ç¶ÈëË®Ó¡ºóµÄÍ¼Æ¬');
+subplot(4, 2, 5), imshow(watermarkedImageName), title('åµŒå…¥æ°´å°åçš„å›¾ç‰‡');
 
 % imageWithWatermark(100:110, 1:2)
 imageWithNoise = imnoise(imageWithWatermark, 'gaussian', 0.01);
 % imageWithNoise(100:110, 1:2)
 imageWithNoiseName = ['imageWithNoiseInDepth'  num2str(bitDepth)  '.bmp'];
 imwrite(imageWithNoise, imageWithNoiseName);
-subplot(4, 2, 7), imshow(imageWithNoiseName), title('Ç¶ÈëË®Ó¡ºóµÄÍ¼Æ¬¼ÓÔëÉù');
+subplot(4, 2, 7), imshow(imageWithNoiseName), title('åµŒå…¥æ°´å°åçš„å›¾ç‰‡åŠ å™ªå£°');
 
 
-% Ë®Ó¡ĞÅÏ¢µÄÌáÈ¡
+% æ°´å°ä¿¡æ¯çš„æå–
 extractedWatermark = zeros(OIRow, OICol);
 for i = 1 : OIRow
     for j = 1 : OICol
@@ -55,7 +55,7 @@ for i = 1 : OIRow
 end
 extractedWatermarkName = ['extractedWatermarkInDepth'  num2str(bitDepth)  '.bmp'];
 imwrite(extractedWatermark, extractedWatermarkName);
-subplot(4, 2, 6), imshow(extractedWatermarkName), title('ÌáÈ¡³öµÄ¶ş½øÖÆË®Ó¡Í¼Æ¬');
+subplot(4, 2, 6), imshow(extractedWatermarkName), title('æå–å‡ºçš„äºŒè¿›åˆ¶æ°´å°å›¾ç‰‡');
 
 
 extractedWatermarkWithNoise = zeros(OIRow, OICol);
@@ -66,4 +66,4 @@ for i=1 : OIRow
 end
 extractedWatermarkWithNoiseName = ['extractedWatermarkWithNoiseInDepth'  num2str(bitDepth)  '.bmp'];
 imwrite(extractedWatermarkWithNoise, extractedWatermarkWithNoiseName);
-subplot(4, 2, 8), imshow(extractedWatermarkWithNoiseName), title('¼ÓÔëºóÌáÈ¡³öµÄ¶ş½øÖÆË®Ó¡Í¼Æ¬');
+subplot(4, 2, 8), imshow(extractedWatermarkWithNoiseName), title('åŠ å™ªåæå–å‡ºçš„äºŒè¿›åˆ¶æ°´å°å›¾ç‰‡');
